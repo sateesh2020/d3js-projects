@@ -1,0 +1,121 @@
+	var xPosition=20;
+	var yPosition=20;
+				while(xPosition<width && i<6){
+					positions.push(xPosition,yPosition);
+					xPosition=xPosition+50;
+					yPosition=yPosition+10;
+					i++;
+				}
+--------------------------------------------------------------------------------------------				
+var jqhr = $.getJSON("json/networkDetails.json", function() {
+}).done(function(data) {
+	$(data.nodes).each(function(i, nodeData) {
+		drawNetworkDiagram(nodeData);
+
+	});
+}).fail(function(error) {
+	console.log(error.status + "Failure Occured while getting JSON data");
+});
+----------------------------------------------------------------------------------------
+
+function drawNetworkDiagram(nodeData) {
+	if (nodeData.type == "site") {
+		var xPosition = nodeData.positions.x;
+		var yPosition = nodeData.positions.y;
+		drawSite(xPosition, yPosition);
+	} else if (nodeData.type == "node") {
+		var xPosition = nodeData.positions.x;
+		var yPosition = nodeData.positions.y;
+		drawNode(xPosition, yPosition);
+	}
+}
+================================================================================================================
+var svgns = "http://www.w3.org/2000/svg";
+/*var jqhr = $.getJSON("json/networkDetails.json", function() {
+}).done(function(data) {
+	$(data.nodes).each(function(i, nodeData) {
+		drawNetworkDiagram(nodeData);
+
+	});
+}).fail(function(error) {
+	console.log(error.status + "Failure Occured while getting JSON data");
+});*/
+//var jsonData = generatePositions(12);
+var jsonData = generatePositions([{name:'A',type:'S'},{name:'B',type:'S'},{name:'C',type:'N'},{name:'D',type:'S'},{name:'E',type:'N'},{name:'F',type:'S'},{name:'G',type:'S'},{name:'H',type:'N'},{name:'I',type:'S'},{name:'J',type:'N'}]);
+
+drawNetworkDiagram(jsonData);
+
+function getRandom(min, max) {
+    return min + Math.floor(Math.random() * (max - min + 1));
+}
+
+
+function generatePositions(Nodes) {
+	var data = {nodes:[]};
+	var noOfNodes = Nodes.length;
+	var _randx = [];
+	var _randy = [];
+	for(var i = 0; i < noOfNodes; i++){
+		_randx.push(getRandom(0,noOfNodes)/10);
+		_randy.push(getRandom(0,noOfNodes)/10);
+	}
+	var width = $('.networkTopology').width();
+	var height = $('.networkTopology').height();
+	var xPositions = [];
+	var yPositions = [];
+	var positionData = '{"nodes":[';
+	for (var i = 0; i < noOfNodes; i++) {
+		var xPosition = Math.floor((_randx[i] * (width-40)) + 10);
+		xPositions.push(xPosition);
+	}
+	for (var i = 0; i < noOfNodes; i++) {
+		var yPosition = Math.floor((_randy[i] * (height-40)) + 10);
+		yPositions.push(yPosition);
+	}
+	
+	for(var i=0; i<xPositions.length;i++){
+		//positionData = positionData+'{"positions":{"x":'+xPositions[i]+','+'"y":'+yPositions[i]+'}},';
+		Nodes[i].positions = {x:xPositions[i],y:yPositions[i]};
+		//data.nodes.push({positions:{x:xPositions[i],y:yPositions[i]}})
+	}
+	//positionData=positionData.substring(0, positionData.length - 1);
+	//positionData=positionData+"]}";
+	//console.log(positionData);
+	//var jsonData = jQuery.parseJSON(positionData);
+	
+	//return jsonData;
+	data.nodes = Nodes;
+	console.log(data);
+	
+	return data;
+	
+}
+function drawNetworkDiagram(jsonData) {	
+	$(jsonData.nodes).each(function(i, nodeData) {
+		var xPosition = nodeData.positions.x;
+		var yPosition = nodeData.positions.y;
+		drawSite(xPosition, yPosition);
+
+	});
+	
+	
+}
+
+function drawSite(xPos, yPos) {
+	var site = document.createElementNS(svgns, 'rect');
+	site.setAttribute('x', xPos);
+	site.setAttribute('y', yPos);
+	site.setAttribute('height', '20');
+	site.setAttribute('width', '20');
+	site.setAttribute('fill', '#FF9900');
+	$('#locations').append(site);
+
+}
+function drawNode(xPos, yPos) {
+	var node = document.createElementNS(svgns, "circle");
+	node.setAttribute("cx", xPos);
+	node.setAttribute("cy", yPos);
+	node.setAttribute("r", 10);
+	node.setAttribute("fill", "green");
+	$('#locations').append(node);
+}
