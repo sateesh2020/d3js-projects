@@ -1,25 +1,5 @@
 var nodes=[
     {
-    "id":"SiteOne",
-     "type":"site"
-     },
-     {
-     "id":"SiteTwo",
-     "type":"site"
-     },
-     {
-     "id":"SiteThree",
-     "type":"site"
-     },
-     {
-    "id":"SiteFour",
-     "type":"site"
-     },
-     {
-     "id":"SiteFive",
-     "type":"site"
-     },
-     {
      "id":"nodeOne",
      "type":"node"
      },
@@ -38,11 +18,74 @@ var nodes=[
      {
      "id":"nodeFive",
      "type":"node"
-     },
-     {
-     "id":"nodeSix",
-     "type":"node"
      }
+]
+
+var nodePoints=[
+	{
+		"noOfNodes":2,
+		"positions":{
+			"x":{
+				"p0":30,
+				"p1":70
+			},
+			"y":{
+				"p0":50,
+				"p1":50
+			}
+		}
+	},
+	{
+		"noOfNodes":3,
+		"positions":{
+			"x":{
+				"p0":30,
+				"p1":70,
+				"p2":30
+			},
+			"y":{
+				"p0":30,
+				"p1":30,
+				"p2":70
+			}
+		}
+	},
+	{
+		"noOfNodes":4,
+		"positions":{
+			"x":{
+				"p0":20,
+				"p1":70,
+				"p2":30,
+				"p3":70
+			},
+			"y":{
+				"p0":20,
+				"p1":20,
+				"p2":70,
+				"p3":70
+			}
+		}
+	},
+	{
+		"noOfNodes":5,
+		"positions":{
+			"x":{
+				"p0":30,
+				"p1":70,
+				"p2":50,
+				"p3":30,
+				"p4":70
+			},
+			"y":{
+				"p0":30,
+				"p1":30,
+				"p2":50,
+				"p3":70,
+				"p4":70
+			}
+		}
+	}
 ]
 var svgns = "http://www.w3.org/2000/svg";
 var jsonData = generatePositions(nodes);
@@ -62,22 +105,23 @@ function getRandom(min, max) {
 function generatePositions(Nodes) {
 	var data = {nodes:[]};
 	var noOfNodes = Nodes.length;
-	var _randx = [];
-	var _randy = [];
-	for(var i = 0; i < noOfNodes; i++){
-		_randx.push(getRandom(0,noOfNodes)/10);
-		_randy.push(getRandom(0,noOfNodes)/10);
-	}
+	var _tempX=getPositions(noOfNodes,'x');
+	var _tempY=getPositions(noOfNodes,'y');
+	console.log(_tempX);
+	console.log("---------------")
+	console.log(_tempY);
 	var width = $('.networkTopology').width();
 	var height = $('.networkTopology').height();
 	var xPositions = [];
 	var yPositions = [];
 	for (var i = 0; i < noOfNodes; i++) {
-		var xPosition = Math.floor((Math.random() * (width-40)) + 10);
+		var point="p"+i;
+		var xPosition = Math.floor((width*_tempX.point)/100)-10;
 		xPositions.push(xPosition);
 	}
 	for (var i = 0; i < noOfNodes; i++) {
-		var yPosition = Math.floor((Math.random() * (height-40)) + 10);
+		var point="p"+i;
+		var yPosition = Math.floor((height*_tempY.point)/100)-10;
 		yPositions.push(yPosition);
 	}
 	
@@ -122,4 +166,21 @@ function drawNode(xPos, yPos) {
 	node.setAttribute("r", 10);
 	node.setAttribute("fill", "#0099FF");
 	$('#locations').append(node);
+}
+
+function getPositions(totalNodes,axistype){
+	var nodeDetails;
+	var _axis=axistype;
+	for(var i=0;i<nodePoints.length;i++){
+		if(nodePoints[i].noOfNodes==totalNodes){
+			if(axistype=='x'){
+				nodeDetails=nodePoints[i].positions.x;
+			}else if(axistype=='y'){
+				nodeDetails=nodePoints[i].positions.y;
+			}else{
+				nodeDetails=[];
+			}			
+		}
+	}
+	return nodeDetails;
 }
