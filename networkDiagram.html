@@ -3,16 +3,22 @@
 <script src="js/d3.js"></script>
 <style>
 
-.link {
+.node-site {
   fill: none;
-  stroke: black;
-  stroke-width: 1.5px;
+  stroke: #09F;
+  stroke-width: 2px;
 }
-
+.site-site{
+  fill: none;
+  stroke: #09F;
+  stroke-width: 2px;
+  stroke-dasharray:5,5;
+}
 .node circle {
   fill: #FF9900;
   stroke: #FF9900;
   stroke-width: 1.5px;
+
 }
 
 text {
@@ -66,11 +72,11 @@ var force = d3.layout.force()
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
-
+var allLinks=force.links();
+var allNodes=force.nodes();
 var link = svg.selectAll(".link")
     .data(force.links())
-    .enter().append("line")
-    .attr("class", "link");
+    .enter().append("line");
 
 var node = svg.selectAll(".node")
     .data(force.nodes())
@@ -92,8 +98,8 @@ function tick() {
       .attr("x1", function(d) { return d.source.x; })
       .attr("y1", function(d) { return d.source.y; })
       .attr("x2", function(d) { return d.target.x; })
-      .attr("y2", function(d) { return d.target.y; });
-
+      .attr("y2", function(d) { return d.target.y; })
+      .attr("class",function(d){ return d.type;});
   node
       .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 }
