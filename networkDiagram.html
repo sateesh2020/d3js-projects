@@ -1,119 +1,69 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<script src="js/d3.js"></script>
-<style>
-
-.node-site {
-  fill: none;
-  stroke: #09F;
-  stroke-width: 2px;
-}
-.site-site{
-  fill: none;
-  stroke: #09F;
-  stroke-width: 2px;
-  stroke-dasharray:5,5;
-}
-.node circle {
-  fill: #FF9900;
-  stroke: #FF9900;
-  stroke-width: 1.5px;
-
-}
-
-text {
-  font: 10px sans-serif;
-  pointer-events: none;
-}
-
-</style>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Network Topology</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/d3.js"></script>
+</head>
 <body>
-<script>
-var links = [
-  {source: "S1", target: "S1.N1", type: "node-site"},
-  {source: "S1", target: "S1.N2", type: "node-site"},
-  {source: "S2", target: "S2.N1", type: "node-site"},
-  {source: "S2", target: "S2.N2", type: "node-site"},
-  {source: "S3", target: "S3.N1", type: "node-site"},
-  {source: "S3", target: "S3.N2", type: "node-site"},
-  {source: "S3", target: "S3.N3", type: "node-site"},  
-  {source: "S1.N1", target: "S2.N1", type: "site-site"},
-  {source: "S1.N1", target: "S2.N2", type: "site-site"},
-  {source: "S1.N1", target: "S1.N2", type: "site-site"},
-  {source: "S1.N1", target: "S3.N2", type: "site-site"},
-  {source: "S1.N2", target: "S2.N1", type: "site-site"},
-  {source: "S1.N2", target: "S3.N1", type: "site-site"},
-  {source: "S2.N2", target: "S3.N2", type: "site-site"},
-  {source: "S3.N1", target: "S3.N2", type: "site-site"},
-  {source: "S3.N1", target: "S3.N3", type: "site-site"}
+  <div class="networkTopology">
+      <!-- <svg class="networkSVG" width="500" height="500">
+        <g class="node" transform="translate(263.48086543077403,387.80787173822296)" id="S1"><circle r="8" class="circle"></circle><text x="12" dy=".35em">S1</text></g>
+        <g class="node" transform="translate(420.6814111384495,124.2650189765196)" id="S2"><circle r="8" class="circle"></circle><text x="12" dy=".35em">S2</text></g>
+        <g class="node" transform="translate(144.58039168583738,207.4858874571656)" id="S3"><circle r="8" class="circle"></circle><text x="12" dy=".35em">S3</text></g>
+        </svg> -->
+  </div>
+  <div id="toolTipData" class="statusTip" style="display:none">
+      <table class="locationData">
+        <tbody>
+            <tr></tr>
+            <tr>
+                <td>Scheduled Time:</td>
+                <td>12-12-12 to 13-12-13</td>
+            </tr>
+            <tr>
+                <td>Current Utilization:</td>
+                <td>
+                    <div class="utilizationProgress" >
+                        <div id="goldSegment" class="segment">35%</div>
+                        <div id="silverSegment" class="segment">25%</div>
+                        <div id="bronzeSegment" class="segment">15%</div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+      </table>
 
-];
+      
+  </div>
+  
 
-var nodes = {};
+  <script src="js/jquery.min.js"></script>
+  <script src="js/networkd3.js"></script>
+  <script src="js/addData.js"></script>
+  <script>
+    //Data from Server
+    var links = [
+      {source: "S1", target: "S1.N1", type: "node-site"},
+      {source: "S1", target: "S1.N2", type: "node-site"},
+      {source: "S2", target: "S2.N1", type: "node-site"},
+      {source: "S2", target: "S2.N2", type: "node-site"},
+      {source: "S3", target: "S3.N1", type: "node-site"},
+      {source: "S3", target: "S3.N2", type: "node-site"},
+      {source: "S3", target: "S3.N3", type: "node-site"},  
+      {source: "S1.N1", target: "S2.N1", type: "site-site"},
+      {source: "S1.N1", target: "S2.N2", type: "site-site"},
+      {source: "S1.N1", target: "S1.N2", type: "site-site"},
+      {source: "S1.N1", target: "S3.N2", type: "site-site"},
+      {source: "S1.N2", target: "S2.N1", type: "site-site"},
+      {source: "S1.N2", target: "S3.N1", type: "site-site"},
+      {source: "S2.N2", target: "S3.N2", type: "site-site"},
+      {source: "S3.N1", target: "S3.N2", type: "site-site"},
+      {source: "S3.N1", target: "S3.N3", type: "site-site"}
+    ];
+    drawNetworkTopology(links);
 
-// Compute the distinct nodes from the links.
-links.forEach(function(link) {
-  link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
-  link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
-});
-
-var width = 500,
-    height = 500;
-
-var force = d3.layout.force()
-    .nodes(d3.values(nodes))
-    .links(links)
-    .size([width, height])
-    .linkDistance(100)
-    .charge(-1000)
-    .on("tick", tick)
-    .start();
-
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
-var allLinks=force.links();
-var allNodes=force.nodes();
-var link = svg.selectAll(".link")
-    .data(force.links())
-    .enter().append("line");
-
-var node = svg.selectAll(".node")
-    .data(force.nodes())
-  .enter().append("g")
-    .attr("class", "node")
-    .on("mouseover", mouseover)
-    .on("mouseout", mouseout);
-
-node.append("circle")
-    .attr("r", 8);
-
-node.append("text")
-    .attr("x", 12)
-    .attr("dy", ".35em")
-    .text(function(d) { return d.name; });
-
-function tick() {
-  link
-      .attr("x1", function(d) { return d.source.x; })
-      .attr("y1", function(d) { return d.source.y; })
-      .attr("x2", function(d) { return d.target.x; })
-      .attr("y2", function(d) { return d.target.y; })
-      .attr("class",function(d){ return d.type;});
-  node
-      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-}
-
-function mouseover() {
-  d3.select(this).select("circle").transition()
-      .duration(750)
-      .attr("r", 16);
-}
-
-function mouseout() {
-  d3.select(this).select("circle").transition()
-      .duration(750)
-      .attr("r", 8);
-}
-
-</script>
+  </script> 
+</body>
+</html>

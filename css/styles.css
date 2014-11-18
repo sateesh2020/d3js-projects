@@ -1,0 +1,78 @@
+body{
+  font-family: 'Century Gothic', sans-serif;
+}
+.networkTopology{
+  width: 550px;
+  height: 550px;
+  margin: 100px auto;
+  border:1px solid #99999;
+}
+.networkSVG{
+  margin: auto;
+}
+.node-site {
+  fill: none;
+  stroke: #09F;
+  stroke-width: 2px;
+}
+.site-site{
+  fill: none;
+  stroke: #09F;
+  stroke-width: 2px;
+  stroke-dasharray:5,5;
+}
+.circle {
+  fill: #FF9900;
+  stroke: #FF9900;
+  stroke-width: 1.5px;
+}
+
+.statusTip{
+  position: absolute;
+  background-color: white;
+}
+.locationData{
+  border:1px solid #999;
+  border-spacing: 6px;
+}
+.locationData tbody{
+  padding: 10px;
+  width: 250px;
+  height: auto;
+  
+  font-size: 8pt;
+}
+.locationData tr{
+  border:0.75px solid #666; 
+}
+.utilizationProgress{
+  width:150px;
+  height: 25px;
+  line-height:25px;
+  background-color: white;
+  border:1px solid black;
+}
+.segment{
+  font-size: 85%;
+  float: left;
+  text-align: center;
+}
+#goldSegment{
+  width: 35%;
+  height: 100%;
+  background-color: #09F;
+}
+#silverSegment{
+  width: 25%;
+  height: 100%;
+  background-color: #F90;
+}
+#bronzeSegment{
+  width: 15%;
+  height: 100%;
+  background-color: #9F0;
+}
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+  }
