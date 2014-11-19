@@ -30,7 +30,9 @@ function drawNetworkTopology(links){
     var node = svg.selectAll(".node")
         .data(force.nodes())
         .enter().append("g")
-        .attr("class", "node");
+        .attr("class", "node")
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout);
 
     node.append("circle")
         .attr("r", 8)

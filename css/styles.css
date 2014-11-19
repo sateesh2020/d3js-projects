@@ -22,14 +22,29 @@ body{
   stroke-dasharray:5,5;
 }
 .circle {
+  fill: #0099FF;
+  stroke: #0099FF;
+  stroke-width: 1.5px;
+}
+.scheduled{
   fill: #FF9900;
   stroke: #FF9900;
   stroke-width: 1.5px;
 }
-
+.active{
+  fill: #14E715;
+  stroke: #14E715;
+  stroke-width: 1.5px; 
+}
+.down{
+  fill: red;
+  stroke: red;
+  stroke-width: 1.5px;
+}
 .statusTip{
   position: absolute;
   background-color: white;
+  display: none;
 }
 .locationData{
   border:1px solid #999;
