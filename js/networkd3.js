@@ -1,3 +1,10 @@
+var mouseX;
+var mouseY;
+$(document).mousemove( function(e) {
+   mouseX = e.pageX; 
+   mouseY = e.pageY;
+}); 
+
 function drawNetworkTopology(links){
     //Actual logic
     var nodes = {};
@@ -54,4 +61,20 @@ function drawNetworkTopology(links){
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
           .attr("id",function(d){ return d.name});
     }
+
+      function mouseover() {
+         var _element=d3.select(this);
+         var _elementId=_element.attr('id');
+         $('#toolTip'+_elementId).show();
+           $('#toolTip'+_elementId).css({'top':mouseY,'left':mouseX}).show();
+       /* d3.select(this).select("circle").transition()
+            .duration(750)
+            .attr("r", 16);*/
+      }
+
+      function mouseout() {
+        var _element=d3.select(this);
+        var _elementId=_element.attr('id');
+        $('#toolTip'+_elementId).hide();
+      }
 }

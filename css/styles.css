@@ -73,17 +73,14 @@ body{
   text-align: center;
 }
 #goldSegment{
-  width: 35%;
   height: 100%;
   background-color: #09F;
 }
 #silverSegment{
-  width: 25%;
   height: 100%;
   background-color: #F90;
 }
 #bronzeSegment{
-  width: 15%;
   height: 100%;
   background-color: #9F0;
 }

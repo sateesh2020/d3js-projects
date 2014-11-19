@@ -35,6 +35,12 @@
         </tbody>
       </table>
 
+<table class=locationData>
+<tbody>
+<tr>
+  <td>active-Time:</td>
+  <td>00:00 to 00:00</td>
+</tr> 
       
   </div>
   
@@ -45,25 +51,25 @@
   <script>
     //Data from Server
     var links = [
-      {source: "S1", target: "S1.N1", type: "node-site"},
-      {source: "S1", target: "S1.N2", type: "node-site"},
-      {source: "S2", target: "S2.N1", type: "node-site"},
-      {source: "S2", target: "S2.N2", type: "node-site"},
-      {source: "S3", target: "S3.N1", type: "node-site"},
-      {source: "S3", target: "S3.N2", type: "node-site"},
-      {source: "S3", target: "S3.N3", type: "node-site"},  
-      {source: "S1.N1", target: "S2.N1", type: "site-site"},
-      {source: "S1.N1", target: "S2.N2", type: "site-site"},
-      {source: "S1.N1", target: "S1.N2", type: "site-site"},
-      {source: "S1.N1", target: "S3.N2", type: "site-site"},
-      {source: "S1.N2", target: "S2.N1", type: "site-site"},
-      {source: "S1.N2", target: "S3.N1", type: "site-site"},
-      {source: "S2.N2", target: "S3.N2", type: "site-site"},
-      {source: "S3.N1", target: "S3.N2", type: "site-site"},
-      {source: "S3.N1", target: "S3.N3", type: "site-site"}
+      {source: "S1", target: "S1-N1", type: "node-site"},
+      {source: "S1", target: "S1-N2", type: "node-site"},
+      {source: "S2", target: "S2-N1", type: "node-site"},
+      {source: "S2", target: "S2-N2", type: "node-site"},
+      {source: "S3", target: "S3-N1", type: "node-site"},
+      {source: "S3", target: "S3-N2", type: "node-site"},
+      {source: "S3", target: "S3-N3", type: "node-site"},  
+      {source: "S1-N1", target: "S2-N1", type: "site-site"},
+      {source: "S1-N1", target: "S2-N2", type: "site-site"},
+      {source: "S1-N1", target: "S1-N2", type: "site-site"},
+      {source: "S1-N1", target: "S3-N2", type: "site-site"},
+      {source: "S1-N2", target: "S2-N1", type: "site-site"},
+      {source: "S1-N2", target: "S3-N1", type: "site-site"},
+      {source: "S2-N2", target: "S3-N2", type: "site-site"},
+      {source: "S3-N1", target: "S3-N2", type: "site-site"},
+      {source: "S3-N1", target: "S3-N3", type: "site-site"}
     ];
-    drawNetworkTopology(links);
-
+    
+      drawNetworkTopology(links);
   </script> 
 </body>
 </html>
