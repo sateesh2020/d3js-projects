@@ -1,18 +1,18 @@
 var trafficData=[
-	{traffic:13,label:"Node1", color:"#D500F9"},
-	{traffic:5,label:"Node2", color:"#F50057"},
-	{traffic:7,label:"Node3", color:"#651FFF"},
-	{traffic:25,label:"Node4", color:"#FF3D00"},
-	{traffic:20,label:"Node5", color:"#00B0FF"},
-	{traffic:15,label:"Node6", color:"#14E715"},
-	{traffic:15,label:"Node7", color:"#FF9100"}
+	{traffic:13,label:"S1-N1", color:"#D500F9"},
+	{traffic:5,label:"S1-N2", color:"#F50057"},
+	{traffic:7,label:"S2-N1", color:"#651FFF"},
+	{traffic:25,label:"S2-N2", color:"#FF3D00"},
+	{traffic:20,label:"S3-N1", color:"#00B0FF"},
+	{traffic:15,label:"S3-N2", color:"#14E715"},
+	{traffic:15,label:"S3-N3", color:"#FF9100"}
 ];
 
-var svg = d3.select("#pieChart").append("svg").attr("width",300).attr("height",300);
+var svg = d3.select("#pieChart").append("svg").attr("width",250).attr("height",250);
 
 svg.append("g").attr("id","trafficChart");
 
-Donut3D.draw("trafficChart", getData(), 150, 150, 130, 100, 30, 0.4);
+Donut3D.draw("trafficChart", getData(), 125, 125, 120, 90, 30, 0.4);
 
 	
 function changeData(){

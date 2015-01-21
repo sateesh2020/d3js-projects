@@ -2,10 +2,10 @@ body{
   font-family: 'Century Gothic', sans-serif;
 }
 .networkTopology{
-  width: 550px;
-  height: 550px;
+  width: 1024px;
+  height: 650px;
   margin: 100px auto;
-  border:1px solid #99999;
+  border:1px solid #F90;
 }
 .networkSVG{
   margin: auto;

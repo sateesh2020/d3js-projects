@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Network Topology</title>
   <link rel="stylesheet" href="css/styles.css">
-  <script src="js/d3.js"></script>
 </head>
 <body>
   <div class="networkTopology">
@@ -14,37 +13,8 @@
         <g class="node" transform="translate(144.58039168583738,207.4858874571656)" id="S3"><circle r="8" class="circle"></circle><text x="12" dy=".35em">S3</text></g>
         </svg> -->
   </div>
-  <div id="toolTipData" class="statusTip" style="display:none">
-      <table class="locationData">
-        <tbody>
-            <tr></tr>
-            <tr>
-                <td>Scheduled Time:</td>
-                <td>12-12-12 to 13-12-13</td>
-            </tr>
-            <tr>
-                <td>Current Utilization:</td>
-                <td>
-                    <div class="utilizationProgress" >
-                        <div id="goldSegment" class="segment">35%</div>
-                        <div id="silverSegment" class="segment">25%</div>
-                        <div id="bronzeSegment" class="segment">15%</div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-      </table>
-
-<table class=locationData>
-<tbody>
-<tr>
-  <td>active-Time:</td>
-  <td>00:00 to 00:00</td>
-</tr> 
-      
-  </div>
-  
-
+  <script src="js/d3.js"></script>
+  <script src="js/fish-eye.js"></script>
   <script src="js/jquery.min.js"></script>
   <script src="js/networkd3.js"></script>
   <script src="js/addData.js"></script>
@@ -57,16 +27,39 @@
       {source: "S2", target: "S2-N2", type: "node-site"},
       {source: "S3", target: "S3-N1", type: "node-site"},
       {source: "S3", target: "S3-N2", type: "node-site"},
-      {source: "S3", target: "S3-N3", type: "node-site"},  
+      {source: "S3", target: "S3-N3", type: "node-site"},      
+      {source: "S4", target: "S4-N1", type: "node-site"},  
+      {source: "S4", target: "S4-N2", type: "node-site"},
+      {source: "S4", target: "S4-N3", type: "node-site"},
+      {source: "S4", target: "S4-N4", type: "node-site"},
+      {source: "S5", target: "S5-N1", type: "node-site"},
+      {source: "S5", target: "S5-N2", type: "node-site"},
+      {source: "S5", target: "S5-N3", type: "node-site"},
+      {source: "S6", target: "S6-N1", type: "node-site"},
+      {source: "S6", target: "S6-N2", type: "node-site"},
       {source: "S1-N1", target: "S2-N1", type: "site-site"},
       {source: "S1-N1", target: "S2-N2", type: "site-site"},
+      {source: "S1-N1", target: "S5-N3", type: "site-site"},
       {source: "S1-N1", target: "S1-N2", type: "site-site"},
-      {source: "S1-N1", target: "S3-N2", type: "site-site"},
+      {source: "S1-N1", target: "S4-N1", type: "site-site"},
+      {source: "S1-N1", target: "S3-N1", type: "site-site"},
       {source: "S1-N2", target: "S2-N1", type: "site-site"},
       {source: "S1-N2", target: "S3-N1", type: "site-site"},
       {source: "S2-N2", target: "S3-N2", type: "site-site"},
       {source: "S3-N1", target: "S3-N2", type: "site-site"},
-      {source: "S3-N1", target: "S3-N3", type: "site-site"}
+      {source: "S3-N1", target: "S4-N1", type: "site-site"},
+      {source: "S3-N3", target: "S4-N2", type: "site-site"},      
+      {source: "S4-N1", target: "S5-N1", type: "site-site"},
+      {source: "S4-N2", target: "S3-N2", type: "site-site"},
+      {source: "S4-N2", target: "S6-N1", type: "site-site"},
+      {source: "S4-N3", target: "S5-N1", type: "site-site"},
+      {source: "S4-N3", target: "S5-N3", type: "site-site"},
+      {source: "S4-N4", target: "S3-N2", type: "site-site"},
+      {source: "S5-N1", target: "S6-N1", type: "site-site"},
+      {source: "S5-N1", target: "S5-N2", type: "site-site"},
+      {source: "S5-N2", target: "S6-N2", type: "site-site"},
+      {source: "S6-N1", target: "S6-N2", type: "site-site"}
+      
     ];
       drawNetworkTopology(links);
   </script> 

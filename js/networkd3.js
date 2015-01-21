@@ -14,17 +14,22 @@ function drawNetworkTopology(links){
       link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
     });
 
-    var width = 500,
-        height = 500;
+    console.log(links);
+    var width = 1024,
+        height = 650;
 
     var force = d3.layout.force()
         .nodes(d3.values(nodes))
         .links(links)
         .size([width, height])
-        .linkDistance(100)
+        .linkDistance(50)
         .charge(-1000)
         .on("tick", tick)
         .start();
+
+    var fisheye = d3.fisheye.circular()
+                    .radius(200)
+                    .distortion(2);
 
     var svg = d3.select('.networkTopology').append("svg")
         .attr("class","networkSVG")
@@ -37,9 +42,7 @@ function drawNetworkTopology(links){
     var node = svg.selectAll(".node")
         .data(force.nodes())
         .enter().append("g")
-        .attr("class", "node")
-        .on("mouseover", mouseover)
-        .on("mouseout", mouseout);
+        .attr("class", "node");
 
     node.append("circle")
         .attr("r", 8)
@@ -56,6 +59,7 @@ function drawNetworkTopology(links){
           .attr("y1", function(d) { return d.source.y; })
           .attr("x2", function(d) { return d.target.x; })
           .attr("y2", function(d) { return d.target.y; })
+          .attr("id", function(d) { return d.source.name+'to'+d.target.name} )
           .attr("class",function(d){ return d.type;});
       node
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
@@ -77,4 +81,17 @@ function drawNetworkTopology(links){
         var _elementId=_element.attr('id');
         $('#toolTip'+_elementId).hide();
       }
+
+      svg.on("mousemove", function() {
+          fisheye.focus(d3.mouse(this));
+
+          node.each(function(d) { d.fisheye = fisheye(d); })
+              .attr("transform", function(d) { return "translate(" + d.fisheye.x + "," + d.fisheye.y + ")"; })
+              .attr("r", function(d) { return d.fisheye.z * 4.5; });
+
+          link.attr("x1", function(d) { return d.source.fisheye.x; })
+              .attr("y1", function(d) { return d.source.fisheye.y; })
+              .attr("x2", function(d) { return d.target.fisheye.x; })
+              .attr("y2", function(d) { return d.target.fisheye.y; });
+        });
 }
