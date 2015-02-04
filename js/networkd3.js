@@ -8,15 +8,33 @@ $(document).mousemove( function(e) {
 function drawNetworkTopology(links){
     //Actual logic
     var nodes = {};
+    var width = 400,
+        height = 400;
     // Compute the distinct nodes from the links.
     links.forEach(function(link) {
       link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
       link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
     });
 
-    console.log(links);
-    var width = 1024,
-        height = 650;
+    var topology = d3.select(".networkTopology")
+      .append("svg:svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("pointer-events", "all")
+      .append('svg:g')
+        .call(d3.behavior.zoom().scaleExtent([1, 5]).on("zoom", redraw))
+      .append('svg:g');
+
+    topology.append('svg:rect')
+        .attr('width', width)
+        .attr('height', height)
+        .attr('fill', 'white');
+
+    function redraw() {
+      topology.attr("transform",
+          "translate(" + d3.event.translate + ")"
+          + " scale(" + d3.event.scale + ")");
+    }
 
     var force = d3.layout.force()
         .nodes(d3.values(nodes))
@@ -27,22 +45,21 @@ function drawNetworkTopology(links){
         .on("tick", tick)
         .start();
 
-    var fisheye = d3.fisheye.circular()
-                    .radius(200)
-                    .distortion(2);
-
-    var svg = d3.select('.networkTopology').append("svg")
+   /* var svg = d3.select('.networkTopology').append("svg")
         .attr("class","networkSVG")
         .attr("width", width)
-        .attr("height", height);
-    var link = svg.selectAll(".link")
+        .attr("height", height)
+        .call(d3.behavior.zoom().on("zoom", redraw));*/
+
+    var link = topology.selectAll(".link")
         .data(force.links())
         .enter().append("line");
 
-    var node = svg.selectAll(".node")
+    var node = topology.selectAll(".node")
         .data(force.nodes())
         .enter().append("g")
-        .attr("class", "node");
+        .attr("class", "node")
+        .on('dblclick', connectedNodes);
 
     node.append("circle")
         .attr("r", 8)
@@ -66,32 +83,38 @@ function drawNetworkTopology(links){
           .attr("id",function(d){ return d.name});
     }
 
-      function mouseover() {
-         var _element=d3.select(this);
-         var _elementId=_element.attr('id');
-         $('#toolTip'+_elementId).show();
-           $('#toolTip'+_elementId).css({'top':mouseY,'left':mouseX}).show();
-       /* d3.select(this).select("circle").transition()
-            .duration(750)
-            .attr("r", 16);*/
-      }
+    //Toggle stores whether the highlighting is on
+    var toggle = 0;
+    //Create an array logging what is connected to what
+    var linkedByIndex = {};
+    for (i = 0; i < nodes.length; i++) {
+        linkedByIndex[i + "," + i] = 1;
+    };
+    links.forEach(function (d) {
+        linkedByIndex[d.source.index + "," + d.target.index] = 1;
+    });
+    //This function looks up whether a pair are neighbours
+    function neighboring(a, b) {
+        return linkedByIndex[a.index + "," + b.index];
+    }
 
-      function mouseout() {
-        var _element=d3.select(this);
-        var _elementId=_element.attr('id');
-        $('#toolTip'+_elementId).hide();
-      }
-
-      svg.on("mousemove", function() {
-          fisheye.focus(d3.mouse(this));
-
-          node.each(function(d) { d.fisheye = fisheye(d); })
-              .attr("transform", function(d) { return "translate(" + d.fisheye.x + "," + d.fisheye.y + ")"; })
-              .attr("r", function(d) { return d.fisheye.z * 4.5; });
-
-          link.attr("x1", function(d) { return d.source.fisheye.x; })
-              .attr("y1", function(d) { return d.source.fisheye.y; })
-              .attr("x2", function(d) { return d.target.fisheye.x; })
-              .attr("y2", function(d) { return d.target.fisheye.y; });
-        });
+    function connectedNodes() {
+        if (toggle == 0) {
+            //Reduce the opacity of all but the neighbouring nodes
+            d = d3.select(this).node().__data__;
+            node.style("opacity", function (o) {
+                return neighboring(d, o) | neighboring(o, d) ? 1 : 0.1;
+            });
+            link.style("opacity", function (o) {
+                return d.index==o.source.index | d.index==o.target.index ? 1 : 0.1;
+            });
+            //Reduce the op
+            toggle = 1;
+        } else {
+            //Put them back to opacity=1
+            node.style("opacity", 1);
+            link.style("opacity", 1);
+            toggle = 0;
+        }
+    }
 }

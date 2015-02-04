@@ -2,8 +2,8 @@ body{
   font-family: 'Century Gothic', sans-serif;
 }
 .networkTopology{
-  width: 1024px;
-  height: 650px;
+  width: 400px;
+  height: 400px;
   margin: 100px auto;
   border:1px solid #F90;
 }
@@ -22,9 +22,9 @@ body{
   stroke-dasharray:5,5;
 }
 .circle {
-  fill: #0099FF;
+  fill: #000;
   stroke: #0099FF;
-  stroke-width: 1.5px;
+  stroke-width: 2px;
 }
 .scheduled{
   fill: #FF9900;
