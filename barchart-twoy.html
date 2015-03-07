@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title>d3</title>
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="http://mbostock.github.com/d3/d3.js"></script>-->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/d3.min.js"></script>
+        <script src="js/d3-tip.js"></script>
+<style>
+.y.axis line, .y.axis path {
+	fill: none;
+	stroke: #000;
+}
+
+.y.axis text {
+    font-size: 14;
+}
+.y.axisRight text {
+    fill: orange;
+}
+.y.axisLeft text {
+    fill: steelblue;
+}    
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  pointer-events: none;
+} 
+</style>
+
+</head>
+<body>
+<svg id="svg"></svg>
+
+
+<script>
+$(document).ready(function(){
+    
+        var m = [80, 80, 80, 80]; // margins
+        var w = 700 - m[1] - m[3];	// width
+        var h = 400 - m[0] - m[2]; // height
+        var noOfTicks = 5;
+        var data = [[0.1, 0.2, 0.3, 0.4, 0.5, 0.6], [1000, 10000, 20000, 30000, 50000, 70000]];
+        var datalength = 6;
+        var labels = ['WI','AUS','RSA','PAK','IRE','IND'];
+         var tip = d3.tip()
+              .attr('class', 'd3-tip')
+              .html(function(d) { return '<span>' + d + '</span>' })
+              .offset([-12, 0]);
+
+        var y0 = d3.scale.linear().domain([0, 1]).range([h,0]),
+            y1 = d3.scale.linear().domain([0, 100000]).range([h,0]);
+
+        var x0 = d3.scale.ordinal().domain(d3.range(datalength)).rangeBands([0, w], 0.2),
+            x1 = d3.scale.ordinal().domain(d3.range(2)).rangeBands([0, x0.rangeBand()]);
+
+        var color = d3.scale.category10();
+
+        var vis = d3.select("#svg")
+            .attr("width", w+m[1]+m[3])
+            .attr("height", h+m[0]+m[2])
+            .append("svg:g")
+            .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+            vis.call(tip) //Tool tip
+
+        var g = vis.selectAll("g")
+            .data(data)
+            .enter()
+            .append("svg:g")
+            .attr("fill", function(d, i) {
+                //console.log(d);
+                return color(i);})
+            .attr("transform", function(d, i) {
+                //console.log(d);
+                return "translate(" + x1(i) + ",0)";});
+        var xAxis = d3.svg.axis().scale(x0).ticks(noOfTicks).orient("bottom");
+        // Add the x-axis.
+            vis.append("svg:g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + h + ")")
+                .call(xAxis);
+        // create left yAxis
+        var yAxisLeft = d3.svg.axis().scale(y0).ticks(noOfTicks).orient("left");
+        // Add the y-axis to the left
+            vis.append("svg:g")
+                 .attr("class", "y axis axisLeft")
+                 .attr("transform", "translate(-15,0)")
+                 .call(yAxisLeft);
+        // create right yAxis
+        var yAxisRight = d3.svg.axis().scale(y1).ticks(noOfTicks).orient("right");
+        // Add the y-axis to the right
+            vis.append("svg:g")
+                .attr("class", "y axis axisRight")
+                .attr("transform", "translate(" + (w+15) + ",0)")
+                .call(yAxisRight);
+
+        var rect = g.selectAll("rect")
+            .data(Object)
+            .enter()
+            .append("svg:rect")
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide)
+            .attr("transform", function(d, i) {return "translate(" + x0(i) + ",0)";})
+            .attr("width", x1.rangeBand())
+            .attr("height", function(d,i,j) { //set the scale according to the series
+                //console.log("Height "+ "D "+d+" i "+i+" j "+j);
+                if (j==0) {
+                    //console.log("Height j=0 "+y0(d));
+                    return h-y0(d);
+                }
+                else if (j==1) {
+                    //console.log("Height j=1 "+y1(d));
+                    return h-y1(d);
+                }
+            })
+            .attr("y", function(d,i,j) { //set the scale according the series
+                if (j==0) {
+                    //console.log("Y j=0 "+h-y0(d));
+                    return y0(d);
+                }
+                else if (j==1) {
+                    //console.log("Y j=1 "+h-y0(d));
+                    return y1(d);
+                }
+            });
+            // Placing Labels
+            $('.x.axis .tick').each(function(i){
+                $(this).find('text').text(labels[i]);   
+            }); 
+    
+});
+</script>
+</body>
+</html>
