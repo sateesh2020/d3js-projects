@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Network Topology</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="networkTopology">
@@ -13,11 +13,11 @@
         <g class="node" transform="translate(144.58039168583738,207.4858874571656)" id="S3"><circle r="8" class="circle"></circle><text x="12" dy=".35em">S3</text></g>
         </svg> -->
   </div>
-  <script src="js/d3.js"></script>
-  <script src="js/fish-eye.js"></script>
-  <script src="js/jquery.min.js"></script>
-  <script src="js/networkd3.js"></script>
-  <script src="js/addData.js"></script>
+  <script src="../js/d3.js"></script>
+  <script src="../js/fish-eye.js"></script>
+  <script src="../js/jquery.min.js"></script>
+  <script src="networkd3.js"></script>
+  <script src="addData.js"></script>
   <script>
     //Data from Server
     var links = [
@@ -40,9 +40,9 @@
       {source: "P7", target: "PE2", type: "node-site"},
       {source: "P8", target: "P9", type: "site-site"},
       {source: "P9", target: "PE2", type: "node-site"}
-      
+
     ];
       drawNetworkTopology(links);
-  </script> 
+  </script>
 </body>
 </html>

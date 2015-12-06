@@ -4,9 +4,9 @@
         <title>d3</title>
         <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="http://mbostock.github.com/d3/d3.js"></script>-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/d3.min.js"></script>
-        <script src="js/d3-tip.js"></script>
+        <script src="../js/jquery.min.js"></script>
+        <script src="../js/d3.min.js"></script>
+        <script src="../js/d3-tip.js"></script>
 <style>
 .y.axis line, .y.axis path {
 	fill: none;
@@ -21,7 +21,7 @@
 }
 .y.axisLeft text {
     fill: steelblue;
-}    
+}
 .d3-tip {
   line-height: 1;
   font-weight: bold;
@@ -42,7 +42,7 @@
   color: rgba(0, 0, 0, 0.8);
   position: absolute;
   pointer-events: none;
-} 
+}
 </style>
 
 </head>
@@ -52,7 +52,7 @@
 
 <script>
 $(document).ready(function(){
-    
+
         var m = [80, 80, 80, 80]; // margins
         var w = 700 - m[1] - m[3];	// width
         var h = 400 - m[0] - m[2]; // height
@@ -143,9 +143,9 @@ $(document).ready(function(){
             });
             // Placing Labels
             $('.x.axis .tick').each(function(i){
-                $(this).find('text').text(labels[i]);   
-            }); 
-    
+                $(this).find('text').text(labels[i]);
+            });
+
 });
 </script>
 </body>
