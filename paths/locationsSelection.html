@@ -11,7 +11,7 @@
       .marker {
         cursor: pointer;
       }
-      .line_s {
+      .fixed_path{
         cursor: pointer;
       }
     </style>
@@ -24,25 +24,32 @@
     <script>
       var locations = [{
                 	"x": 120,
-                	"y": 50
+                	"y": 50,
+                  "id":"S1"
                 }, {
                 	"x": 145,
-                	"y": 300
+                	"y": 300,
+                  "id":"S2"
                 }, {
                 	"x": 300,
-                	"y": 478
+                	"y": 478,
+                  "id":"S3"
                 }, {
                 	"x": 455,
-                	"y": 35
+                	"y": 35,
+                  "id":"S4"
                 }, {
                 	"x": 650,
-                	"y": 300
+                	"y": 300,
+                  "id":"S5"
                 }, {
                 	"x": 765,
-                	"y": 432
+                	"y": 432,
+                  "id":"S6"
                 },{
                 	"x": 895,
-                	"y": 132
+                	"y": 132,
+                  "id":"S7"
                 }
               ];
       var svgElem = generateSVG('.canvas',1000,550);
@@ -60,10 +67,10 @@
                        .attr("cy", function (d) { return d.y; })
                        .attr("r", function (d) { return 10; })
                        .attr('class','marker')
+                       .attr('id', function(d) {return d.id;})
                        .style("fill", "#00FF99");
 
       $('.marker').on('click',function(ev){
-          console.log(ev);
           click_event(ev);
       });
     </script>

@@ -6,6 +6,8 @@
   }).interpolate('bundle');
   var firstClick = false;
   var map_factor = 1.096825396825397;
+  var source = "";
+  var destination = "";
   //The SVG Container
   var svgContainer;
   var pathGroup;
@@ -22,9 +24,12 @@
   };
   function click_event(event){
     if (!firstClick) {
+      source = event.target.id || 'S';
       bind_interatcive_line(event, 'svg', 'svg');
     } else {
+      destination = event.target.id || 'D';
       unbind_interactive_line(event, 'svg', 'svg');
+      fixLineElement(source,destination);
     }
   }
   function bind_interatcive_line(event, box, element) {
@@ -116,4 +121,20 @@
     ];
     //console.log(lineData);
     pathGroup.append("path").attr("d", lineFunction(lineData)).attr("stroke", "#FF9900").attr("stroke-width", 2).attr("fill", "none").attr("class", 'line_s');
+  }
+  function fixLineElement(source,destination) {
+    var uniqueId = source+'to'+destination;
+    $('path').each(function(i,e){
+      if($(e).attr('id') == uniqueId){
+        $(e).remove();
+      }
+    });
+    var actualLineElement = $('path.line_s');
+    $(actualLineElement).attr('id',uniqueId).attr('class','fixed_path');
+    bind_path_event(uniqueId);
+  }
+  function bind_path_event(elementId){
+    $('#'+elementId).bind('click',function(event){
+        alert(event.target);
+    });
   }
