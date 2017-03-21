@@ -120,10 +120,11 @@
       }
     ];
     //console.log(lineData);
-    pathGroup.append("path").attr("d", lineFunction(lineData)).attr("stroke", "#FF9900").attr("stroke-width", 2).attr("fill", "none").attr("class", 'line_s');
+    pathGroup.append("path").attr("d", lineFunction(lineData)).attr("stroke", "#FF9900").
+    attr("stroke-width", 2).attr("fill", "none").attr("class", 'line_s');
   }
   function fixLineElement(source,destination) {
-    var uniqueId = source+'to'+destination;
+    var uniqueId = 'SEG_'+source+'_TO_'+destination;
     $('path').each(function(i,e){
       if($(e).attr('id') == uniqueId){
         $(e).remove();
